@@ -85,6 +85,26 @@ class Manager(object):
         self.pretty(items)
         return True
 
+    def updatelocalstate(self, statepath='state.json', data=None):
+        if data is None:
+            return
+
+        if os.path.isfile(statepath):
+            with open(statepath, 'r') as infile:
+                state = json.load(infile)
+        else:
+            state = dict()
+
+        z = state.copy()
+        z.update(data)
+
+        # Save updated state locally
+        with open(statepath, 'w') as outfile:
+            json.dump(z, outfile)
+
+        return len(z)
+
+
 if __name__ == '__main__':
     logger = logging.getLogger()
     logger.addHandler(logging.StreamHandler())
@@ -92,3 +112,4 @@ if __name__ == '__main__':
     slave = Manager(cachedir='cache', testmode=False, timeout=1*60)
     news = slave.checkproviders()
     slave.pushnews(items=news)
+    slave.updatelocalstate(data=news)

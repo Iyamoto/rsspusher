@@ -6,3 +6,4 @@ tests/testrss.xml
 cache/*
 cachetest
 cachetest/*
+state.json

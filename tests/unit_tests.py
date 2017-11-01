@@ -68,6 +68,18 @@ class ManagerTestCase(unittest.TestCase):
         uniqitems = self.manager.checkproviders()
         self.assertTrue(self.manager.pushnews(items=uniqitems))
 
+    def test_updatelocalstate(self):
+        uniqitems = self.manager.checkproviders()
+        statepath = 'state.json'
+        statesize = self.manager.updatelocalstate(statepath=statepath, data=uniqitems)
+        self.assertEqual(statesize, len(uniqitems.keys()))
+
+        uniqitems['test'] = 'testlink'
+        statesize = self.manager.updatelocalstate(statepath=statepath, data=uniqitems)
+        self.assertEqual(statesize, len(uniqitems.keys()))
+
+        os.remove(os.path.join(statepath))
+
 
 if __name__ == '__main__':
     unittest.main()
