@@ -5,22 +5,22 @@ import hashlib
 import datetime
 import time
 import json
+import logging
 import rssmodule
 import settings
 
 
 class Manager(object):
 
-    def __init__(self, cachedir='cache', testmode=True, timeout=10.0):
+    def __init__(self, cachedir='cache', testmode=True, timeout=60):
         assert type(cachedir) == str
         assert type(testmode) == bool
-        assert type(timeout) == float
         self.testmode = testmode
         self.cachedir = cachedir
         if self.testmode:
             self.timeout = 0.1
         else:
-            self.timeout = timeout
+            self.timeout = float(timeout)
 
     def clearcache(self):
         if self.cachedir and not os.path.isfile(self.cachedir):
@@ -57,20 +57,38 @@ class Manager(object):
         now = datetime.datetime.now()
         uniqitems = dict()
         for provider in settings.rssproviders:
-            items = dict()
             if self.testmode:
                 provider = 'test'
+            else:
+                if provider == 'test':
+                    continue
             for key in settings.searchkeys:
                 searchphrase = key + '%20' + str(now.year)
                 rssurl = settings.rssproviders[provider].format(searchphrase)
-                rss = rssmodule.RSS(rssurl)
-                time.sleep(self.timeout)
+                logging.debug(rssurl)
+                try:
+                    rss = rssmodule.RSS(rssurl)
+                except:
+                    logging.debug('Skipping')
+                    continue
+                logging.debug(str(rss.count()))
                 items = self.check4duplicates(items=rss.getitems())
                 for title in items:
+                    logging.debug(title)
                     uniqitems[title] = items[title]
+                time.sleep(self.timeout)
         return uniqitems
 
     def pushnews(self, items):
         # TODO Where to push? What actions to take?
         self.pretty(items)
         return True
+
+if __name__ == '__main__':
+    logger = logging.getLogger()
+    logger.addHandler(logging.StreamHandler())
+    logger.setLevel(logging.DEBUG)
+    slave = Manager(cachedir='cache', testmode=False, timeout=2*60)
+    slave.clearcache()
+    news = slave.checkproviders()
+    slave.pushnews(items=news)

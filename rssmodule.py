@@ -1,6 +1,7 @@
 # RSS related stuff is here
 
 import feedparser as fp
+import logging
 
 
 class RSS(object):
@@ -9,6 +10,10 @@ class RSS(object):
     def __init__(self, url=''):
         self.rssurl = url
         self.rss = fp.parse(self.rssurl)
+        self.status = self.rss.status
+        if self.status != 200:
+            logging.debug(self.status)
+            raise Exception(self.status)
 
     def count(self):
         return len(self.rss.entries)
