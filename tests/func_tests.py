@@ -32,6 +32,9 @@ class RSSTestCase(unittest.TestCase):
             link = items[title]
             self.assertIn('magnet:?xt=urn:btih:', link)
 
+    def test_caching(self):
+        self.fail('Complete the test')
+
 
 if __name__ == '__main__':
     pass

@@ -23,8 +23,8 @@ class RSSTestCase(unittest.TestCase):
         self.assertNotEqual(dict(), items)
         for title in items:
             link = items[title]
-            self.assertEqual(str, link)
-            self.assertEqual(str, title)
+            self.assertEqual(str, type(link))
+            self.assertEqual(str, type(title))
 
 
 if __name__ == '__main__':
