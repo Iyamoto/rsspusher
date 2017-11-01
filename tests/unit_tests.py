@@ -35,14 +35,15 @@ class ManagerTestCase(unittest.TestCase):
 
     def test_clearcache(self):
         # Check if cache dir is created
-        if os.path.isdir(self.cachedir):
-            os.remove(self.cachedir)
         manager.clearcache(cachedir=self.cachedir)
         self.assertTrue(os.path.isdir(self.cachedir))
 
-        # Write something to self.cachedir
+        # Write something to self.cachedir and clear cache
+        filepath = os.path.join(self.cachedir, 'test.txt')
+        manager.touch(filepath)
 
-        # Check if the dir is empty
+        manager.clearcache(cachedir=self.cachedir)
+        self.assertFalse(os.path.isfile(filepath))
 
     def test_analyze(self):
         manager.analyze()

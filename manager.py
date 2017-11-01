@@ -22,3 +22,8 @@ def grabrss():
     # self.searchphrase = self.searchkey + '%20' + self.year
     # self.rssurl = settings.rssproviders[self.provider].format(self.searchphrase)
     pass
+
+
+def touch(path):
+    with open(path, 'a'):
+        os.utime(path, None)
