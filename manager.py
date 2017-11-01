@@ -87,7 +87,7 @@ class Manager(object):
 
     def updatelocalstate(self, statepath='state.json', data=None):
         if data is None:
-            return
+            return 0
 
         if os.path.isfile(statepath):
             with open(statepath, 'r') as infile:
