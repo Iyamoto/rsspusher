@@ -88,7 +88,7 @@ if __name__ == '__main__':
     logger = logging.getLogger()
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(logging.DEBUG)
-    slave = Manager(cachedir='cache', testmode=False, timeout=2*60)
+    slave = Manager(cachedir='cache', testmode=False, timeout=10*60)
     slave.clearcache()
     news = slave.checkproviders()
     slave.pushnews(items=news)

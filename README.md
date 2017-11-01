@@ -5,6 +5,11 @@ RSS filtering and reacting
 TBD
 
 ## TODO
-Keep base of known links
-Magnet API?
+
+1. Keep base of known links
+2. Magnet API?
+
+## To explore
+
+    https://github.com/nosmokingbandit/watcher3
 
