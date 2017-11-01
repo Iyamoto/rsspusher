@@ -32,21 +32,32 @@ class RSSTestCase(unittest.TestCase):
 class ManagerTestCase(unittest.TestCase):
     def setUp(self):
         self.cachedir = os.path.join('..', 'cachetest')
+        self.manager = manager.Manager(cachedir=self.cachedir)
+        self.manager.clearcache()
+
+        self.rssurl = 'testrss.xml'
+        self.rss = rssmodule.RSS(self.rssurl)
+        self.rssitems = self.rss.getitems()
+
+    def tearDown(self):
+        self.manager.clearcache()
 
     def test_clearcache(self):
         # Check if cache dir is created
-        manager.clearcache(cachedir=self.cachedir)
+        self. manager.clearcache()
         self.assertTrue(os.path.isdir(self.cachedir))
 
         # Write something to self.cachedir and clear cache
         filepath = os.path.join(self.cachedir, 'test.txt')
-        manager.touch(filepath)
+        self.manager.touch(filename='test.txt')
 
-        manager.clearcache(cachedir=self.cachedir)
+        self.manager.clearcache()
         self.assertFalse(os.path.isfile(filepath))
 
-    def test_analyze(self):
-        manager.analyze()
+    def test_check4duplicates(self):
+        uniqitems = self.manager.check4duplicates(self.rssitems)
+        self.assertEqual(dict, type(uniqitems))
+        self.assertGreater(len(uniqitems.keys()), 0)
 
 
 if __name__ == '__main__':

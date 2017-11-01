@@ -11,6 +11,11 @@ class UsageTestCase(unittest.TestCase):
         self.rssurl = 'testrss.xml'
 
         self.cachedir = os.path.join('..', 'cachetest')
+        self.manager = manager.Manager(cachedir=self.cachedir)
+        self.manager.clearcache()
+
+    def tearDown(self):
+        self.manager.clearcache()
 
     def test_read_rss_and_get_titles_and_links(self):
         # Read RSS and discover several items
@@ -33,20 +38,17 @@ class UsageTestCase(unittest.TestCase):
             self.assertIn('magnet:?xt=urn:btih:', link)
 
     def test_new_items_and_caching(self):
-        # Clear cache
-        manager.clearcache(cachedir=self.cachedir)
-
         # Analyze one RSS feed
         rssold = rssmodule.RSS(self.rssurl)
         olditems = rssold.getitems()
-        oldrezults = manager.analyze(items=olditems)
+        oldrezults = self.manager.check4duplicates(items=olditems)
 
         self.assertGreater(len(oldrezults), 0)
 
         # Analyze the same RSS feed again
         rssnew = rssmodule.RSS(self.rssurl)
         newitems = rssnew.getitems()
-        newrezults = manager.analyze(items=newitems)
+        newrezults = self.manager.check4duplicates(items=newitems)
 
         self.assertEqual(0, len(newrezults))
 
@@ -55,5 +57,4 @@ class UsageTestCase(unittest.TestCase):
         self.fail('Complete the test')
 
 if __name__ == '__main__':
-    pass
-    # unittest.main()
+    unittest.main()
