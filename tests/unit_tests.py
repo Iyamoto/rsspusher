@@ -41,6 +41,7 @@ class ManagerTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.manager.clearcache()
+        os.rmdir(self.cachedir)
 
     def test_clearcache(self):
         # Check if cache dir is created
