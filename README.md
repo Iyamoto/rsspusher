@@ -4,11 +4,10 @@ RSS filtering and reacting
 ## Deployment
 git clone https://github.com/Iyamoto/rsspusher.git
 cd rsspusher
-
+cp settings.py.sample settings.py
 
 ## TODO
 
-1. Keep base of known links
 2. Magnet API?
 
 ## To explore
