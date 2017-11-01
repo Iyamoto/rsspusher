@@ -67,7 +67,8 @@ class Manager(object):
                 rssurl = settings.rssproviders[provider].format(searchphrase)
                 logging.debug(rssurl)
                 try:
-                    rss = rssmodule.RSS(rssurl)
+                    referrer = 'https://www.skytorrents.in/search/all/ad/1/?l=en-us&q={}'.format(key)
+                    rss = rssmodule.RSS(rssurl, referrer=referrer)
                 except:
                     logging.debug('Skipping')
                     continue

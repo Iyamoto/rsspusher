@@ -7,9 +7,9 @@ import logging
 class RSS(object):
     """RSS related stuff is here"""
 
-    def __init__(self, url=''):
+    def __init__(self, url='', referrer='http://yandex.ru'):
         self.rssurl = url
-        self.rss = fp.parse(self.rssurl)
+        self.rss = fp.parse(self.rssurl, referrer=referrer)
         try:
             self.status = self.rss.status
             if self.status != 200:
