@@ -52,9 +52,23 @@ class UsageTestCase(unittest.TestCase):
 
         self.assertEqual(0, len(newrezults))
 
-    @unittest.skip
-    def test_several_rss_retieval(self):
-        self.fail('Complete the test')
+    def test_several_rss_retievals(self):
+        # Grab all configured feeds
+        items = self.manager.checkproviders()
+        self.assertEqual(dict, type(items))
+
+        # Check if the titles are relevant
+        for title in items.keys():
+            self.assertIn(self.searchkey, title.lower())
+            self.assertIn(self.year, title.lower())
+
+        # Check if links are good
+        for title in items.keys():
+            link = items[title]
+            self.assertIn('magnet:?xt=urn:btih:', link)
+
+        # New items discovered and pushed to the master
+        self.manager.pushnews(items=items)
 
 if __name__ == '__main__':
     unittest.main()

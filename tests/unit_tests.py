@@ -59,6 +59,15 @@ class ManagerTestCase(unittest.TestCase):
         self.assertEqual(dict, type(uniqitems))
         self.assertGreater(len(uniqitems.keys()), 0)
 
+    def test_checkproviders(self):
+        uniqitems = self.manager.checkproviders()
+        self.assertEqual(dict, type(uniqitems))
+        self.assertGreater(len(uniqitems.keys()), 0)
+
+    def test_pushnews(self):
+        uniqitems = self.manager.checkproviders()
+        self.assertTrue(self.manager.pushnews(items=uniqitems))
+
 
 if __name__ == '__main__':
     unittest.main()
