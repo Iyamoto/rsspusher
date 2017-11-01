@@ -10,10 +10,13 @@ class RSS(object):
     def __init__(self, url=''):
         self.rssurl = url
         self.rss = fp.parse(self.rssurl)
-        self.status = self.rss.status
-        if self.status != 200:
-            logging.debug(self.status)
-            raise Exception(self.status)
+        try:
+            self.status = self.rss.status
+            if self.status != 200:
+                logging.debug(self.status)
+                raise Exception(self.status)
+        except:
+            self.status = None
 
     def count(self):
         return len(self.rss.entries)
