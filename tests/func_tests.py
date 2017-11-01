@@ -1,5 +1,7 @@
 import unittest
 import os
+import sys
+sys.path.append('..')
 import rssmodule
 import manager
 
