@@ -5,5 +5,5 @@ RSS filtering and reacting
 TBD
 
 ## TODO
-Caching?
+Keep base of known links
 
