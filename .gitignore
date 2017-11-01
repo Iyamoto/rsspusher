@@ -2,3 +2,4 @@
 .idea
 settings.py
 __pycache__
+tests/testrss.xml
