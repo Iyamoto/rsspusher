@@ -2,7 +2,7 @@ import unittest
 import rssmodule
 
 
-class RSSTestCase(unittest.TestCase):
+class UnitRSSTestCase(unittest.TestCase):
     def setUp(self):
         self.rssurl = 'testrss.xml'
         self.rss = rssmodule.RSS(self.rssurl)
@@ -25,6 +25,9 @@ class RSSTestCase(unittest.TestCase):
             link = items[title]
             self.assertEqual(str, type(link))
             self.assertEqual(str, type(title))
+
+    def test_analyze(self):
+        self.rss.analyze()
 
 
 if __name__ == '__main__':
