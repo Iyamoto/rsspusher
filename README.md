@@ -2,7 +2,9 @@
 RSS filtering and reacting
 
 ## Deployment
-TBD
+git clone https://github.com/Iyamoto/rsspusher.git
+cd rsspusher
+
 
 ## TODO
 

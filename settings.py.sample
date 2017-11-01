@@ -1,0 +1,11 @@
+# Settings
+
+from random import shuffle
+
+rssproviders = {
+}
+
+searchkeys = [
+]
+
+shuffle(searchkeys)
