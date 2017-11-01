@@ -1,8 +1,10 @@
 import unittest
+import os
 import rssmodule
+import manager
 
 
-class UnitRSSTestCase(unittest.TestCase):
+class RSSTestCase(unittest.TestCase):
     def setUp(self):
         self.rssurl = 'testrss.xml'
         self.rss = rssmodule.RSS(self.rssurl)
@@ -26,8 +28,24 @@ class UnitRSSTestCase(unittest.TestCase):
             self.assertEqual(str, type(link))
             self.assertEqual(str, type(title))
 
+
+class ManagerTestCase(unittest.TestCase):
+    def setUp(self):
+        self.cachedir = os.path.join('..', 'cachetest')
+
+    def test_clearcache(self):
+        # Check if cache dir is created
+        if os.path.isdir(self.cachedir):
+            os.remove(self.cachedir)
+        manager.clearcache(cachedir=self.cachedir)
+        self.assertTrue(os.path.isdir(self.cachedir))
+
+        # Write something to self.cachedir
+
+        # Check if the dir is empty
+
     def test_analyze(self):
-        self.rss.analyze()
+        manager.analyze()
 
 
 if __name__ == '__main__':

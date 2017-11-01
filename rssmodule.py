@@ -24,6 +24,3 @@ class RSS(object):
         for entry in self.rss.entries:
             items[entry['title']] = entry['link']
         return items
-
-    def analyze(self):
-        pass

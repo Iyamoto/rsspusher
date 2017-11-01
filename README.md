@@ -6,4 +6,5 @@ TBD
 
 ## TODO
 Keep base of known links
+Magnet API?
 
