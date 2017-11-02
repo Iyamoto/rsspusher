@@ -34,7 +34,7 @@ class RSSTestCase(unittest.TestCase):
 class ManagerTestCase(unittest.TestCase):
     def setUp(self):
         self.cachedir = os.path.join('..', 'cachetest')
-        self.manager = manager.Manager(cachedir=self.cachedir)
+        self.manager = manager.Manager(cachedir=self.cachedir, pushurl='http://127.0.0.1/')
         self.manager.clearcache()
 
         self.rssurl = 'testrss.xml'
@@ -69,7 +69,15 @@ class ManagerTestCase(unittest.TestCase):
 
     def test_pushnews(self):
         uniqitems = self.manager.checkproviders()
-        self.assertFalse(self.manager.pushnews(items=uniqitems))
+
+        def mockpushnews(items=None):
+            self.pusheditems = items
+            return True
+
+        self.manager.pushnews = mockpushnews
+
+        self.assertTrue(self.manager.pushnews(items=uniqitems))
+        self.assertDictEqual(self.pusheditems, uniqitems)
 
     def test_updatelocalstate(self):
         uniqitems = self.manager.checkproviders()
