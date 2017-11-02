@@ -18,6 +18,7 @@ class UsageTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.manager.clearcache()
+        os.rmdir(self.cachedir)
 
     def test_read_rss_and_get_titles_and_links(self):
         # Read RSS and discover several items
