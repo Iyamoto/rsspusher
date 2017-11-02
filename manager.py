@@ -2,7 +2,7 @@
 
 import os
 import hashlib
-import datetime
+import requests
 import time
 import json
 import logging
@@ -12,9 +12,11 @@ import settings
 
 class Manager(object):
 
-    def __init__(self, cachedir='cache', testmode=True, timeout=60):
+    def __init__(self, cachedir='cache', testmode=True, timeout=60, pushurl=''):
         assert type(cachedir) == str
+        assert type(pushurl) == str
         assert type(testmode) == bool
+        self.pushurl = pushurl
         self.testmode = testmode
         self.cachedir = cachedir
         if self.testmode:
@@ -54,7 +56,6 @@ class Manager(object):
 
     def checkproviders(self):
         """Return uniq items from providers"""
-        now = datetime.datetime.now()
         uniqitems = dict()
         for provider in settings.rssproviders:
             if self.testmode:
@@ -63,7 +64,7 @@ class Manager(object):
                 if provider == 'test':
                     continue
             for key in settings.searchkeys:
-                searchphrase = key + '%20' + str(now.year)
+                searchphrase = key.replace(' ', '%20')
                 rssurl = settings.rssproviders[provider].format(searchphrase)
                 logging.debug(rssurl)
                 try:
@@ -82,8 +83,12 @@ class Manager(object):
 
     def pushnews(self, items):
         # TODO Where to push? What actions to take?
-        self.pretty(items)
-        return True
+        if self.pushurl:
+            r = requests.post(self.pushurl, json=items)
+            if r.ok:
+                return True
+
+        return False
 
     def updatelocalstate(self, statepath='state.json', data=None):
         if data is None:
@@ -109,7 +114,8 @@ if __name__ == '__main__':
     logger = logging.getLogger()
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(logging.DEBUG)
-    slave = Manager(cachedir='cache', testmode=False, timeout=1*60)
+    slave = Manager(cachedir='cache', testmode=False, timeout=2*60, pushurl=settings.pushurl)
     news = slave.checkproviders()
-    slave.pushnews(items=news)
-    slave.updatelocalstate(data=news)
+    if len(news.keys()) > 0:
+        slave.pushnews(items=news)
+        slave.updatelocalstate(data=news)

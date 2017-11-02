@@ -69,7 +69,7 @@ class ManagerTestCase(unittest.TestCase):
 
     def test_pushnews(self):
         uniqitems = self.manager.checkproviders()
-        self.assertTrue(self.manager.pushnews(items=uniqitems))
+        self.assertFalse(self.manager.pushnews(items=uniqitems))
 
     def test_updatelocalstate(self):
         uniqitems = self.manager.checkproviders()
